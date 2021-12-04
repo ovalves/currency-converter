@@ -7,6 +7,7 @@
  */
 
 use Selene\Model\ModelAbstract;
+use App\Services\MongoDBService;
 
 class ConvertModel extends ModelAbstract
 {
@@ -25,13 +26,15 @@ class ConvertModel extends ModelAbstract
      */
     public function isValidCode(string $code) : bool
     {
-        /**
-         * @todo checar o codigo na base de dados (MONGO DB)
-         */
-        return true;
-        // return [
-        //     'USD'
-        // ];
+        return (new MongoDBService)
+            ->filters(['type' => $code])
+            ->options([
+                'projection' => [
+                    '_id' => 0
+                ],
+            ])
+            ->query('currency_codes')
+            ->isValid();
     }
 
     /**

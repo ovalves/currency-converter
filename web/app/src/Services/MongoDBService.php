@@ -4,24 +4,26 @@ namespace App\Services;
 
 use MongoDB\Driver\Query;
 use MongoDB\Driver\Manager;
+use MongoDB\Driver\Cursor;
 
-class MongoDBService
+final class MongoDBService
 {
+    const QUERY_LIMIT = 15;
+
     private ?Manager $connection = null;
     private array $filters = [];
-    private array $options = [
-        'limit' => 15
-    ];
+    private array $options = [];
+    private $cursor;
 
-    public function filters(mixed $filters): self
+    public function filters(array $filters): self
     {
-        $this->filters[] = $filters;
+        $this->filters = $filters;
         return $this;
     }
 
-    public function options(mixed $options): self
+    public function options(array $options): self
     {
-        $this->options[] = $options;
+        $this->options = $options;
         return $this;
     }
 
@@ -29,8 +31,28 @@ class MongoDBService
     {
         $dbCollection = \env('MONGO_DATABASE') . '.' . $collection;
 
+        if (empty($this->options['limit'])) {
+            $this->options['limit'] = self::QUERY_LIMIT;
+        }
+
         $query = new Query($this->filters, $this->options);
-        return $this->getConnection()->executeQuery($dbCollection, $query);
+        $this->cursor = $this->getConnection()->executeQuery($dbCollection, $query);
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        return $this->cursor->toArray();
+    }
+
+    public function isValid(): bool
+    {
+        return (bool) (false === empty($this->toArray()));
+    }
+
+    public function getMongoCursor(): Cursor
+    {
+        return $this->cursor;
     }
 
     public function getConnection(): Manager

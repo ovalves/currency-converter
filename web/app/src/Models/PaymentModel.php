@@ -31,15 +31,14 @@ class PaymentModel extends ModelAbstract
      */
     public function isValidPayment(int $payment) : bool
     {
-        $data = (new MongoDBService)->filters(['type' => ['$eq' => $payment]])->query('payment')->toArray();
-        echo '<pre>';
-        var_dump($data);
-        die();
-        return (new MongoDBService)->filters(['type' => ['$eq' => $payment]])->query('payment')->toArray();
-        // return match ($payment) {
-        //     self::TYPE_BOLETO => true,
-        //     self::TYPE_CREDIT_CARD => true,
-        //     default => false
-        // };
+        return (new MongoDBService)
+                    ->filters(['type' => $payment])
+                    ->options([
+                        'projection' => [
+                            '_id' => 0
+                        ],
+                    ])
+                    ->query('payment')
+                    ->isValid();
     }
 }
