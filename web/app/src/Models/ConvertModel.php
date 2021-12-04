@@ -26,7 +26,7 @@ class ConvertModel extends ModelAbstract
     public function isValidCode(string $code) : bool
     {
         /**
-         * @todo checar o codigo na base de dados
+         * @todo checar o codigo na base de dados (MONGO DB)
          */
         return true;
         // return [

@@ -1,10 +1,4 @@
 <?php
-/**
- * @copyright   2019 - Selene
- * @author      Vinicius Oliveira <vinicius_o.a@live.com>
- * @category    Micro Framework
- * @since       2019-10-12
- */
 
 namespace App\Traits;
 
@@ -18,6 +12,9 @@ trait ConvertRequestTrait
 {
     public function throwErrorForRequestedValue(float $value): void
     {
+        /**
+         * @todo Pegar os dados MIN_VALUE_CONSTRAINT e MAX_VALUE_CONSTRAINT da config do mongo DB
+         */
         if ($value < ConvertModel::MIN_VALUE_CONSTRAINT || $value > ConvertModel::MAX_VALUE_CONSTRAINT) {
             throw new ValueOutOfRangeException();
         }

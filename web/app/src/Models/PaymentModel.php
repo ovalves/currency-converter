@@ -28,7 +28,7 @@ class PaymentModel extends ModelAbstract
      * Define as taxas dos tipos de pagamentos
      * Formas de pagamento (taxas aplicadas no valor da compra e aceitar apenas as opções abaixo)
      *
-     * @todo colocar esses valores na base de dados
+     * @todo colocar esses valores na base de dados MONGO DB
      */
     const TAX_BOLETO = 1.45;
     const TAX_CREDIT_CARD = 7.63;
