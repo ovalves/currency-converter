@@ -8,33 +8,21 @@
 
 use Selene\Request\Request;
 use Selene\Response\Response;
-use App\Traits\ConvertRequestTrait;
 use Selene\Controllers\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Exceptions\CurrencyConverterGeneralException;
+use App\Actions\CurrencyConvertertAction;
 
 class CurrencyConverterController extends BaseController
 {
-    use ConvertRequestTrait;
-
     private $gateway;
 
     public function convert(Request $request, Response $response): JsonResponse
     {
         try {
-            $params = $request->getQueryParams();
-
-            if (empty($params)) {
-                throw new CurrencyConverterGeneralException();
-            }
-
-            $value = (float) $params['value'] ?? 0;
-            $payment = (int) $params['payment'] ?? null;
-            $code = $params['code'] ?? '';
-
-            $this->throwErrorForRequestedValue($value);
-            $this->throwErrorForRequestedCode($code);
-            $this->throwErrorForRequestedPayment($payment);
+            $data = (new CurrencyConvertertAction)->run($request);
+            echo '<pre>';
+            var_dump($data);
+            die();
 
             /**
              * Os services irão implementar a mesma interface
