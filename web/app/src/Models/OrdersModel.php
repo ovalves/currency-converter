@@ -20,11 +20,6 @@ class OrdersModel extends ModelAbstract
         try {
             return (new MongoDriver)
                 // ->filters(['type' => $type])
-                ->options([
-                    'projection' => [
-                        '_id' => 0
-                    ],
-                ])
                 ->query('orders')
                 ->toArray();
         } catch (\Throwable $th) {
