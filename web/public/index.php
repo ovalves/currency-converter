@@ -13,11 +13,15 @@ $app->route()->middleware([
 //    new Selene\Middleware\Handler\Auth
 ])->group(function () use ($app) {
 
-    // Rota de Conversão de tipo
+    // Conversão de moedas
     $app->route()->post('/currency/convert', 'CurrencyConverterController@convert');
 
-    // Rota de Listagem dos tipos de pagamentos
+    // Listagem dos pedidos de conversão dos clientes
+    $app->route()->get('/orders', 'OrdersController@orders');
+
+    // Listagem dos tipos de pagamentos
     $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');
+
 
     $app->route()->get('/', 'HomeController@index');
 })->run();

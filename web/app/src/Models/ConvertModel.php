@@ -7,7 +7,7 @@
  */
 
 use Selene\Model\ModelAbstract;
-use App\Services\MongoDBService;
+use Selene\Drivers\MongoDB\MongoDriver;
 
 class ConvertModel extends ModelAbstract
 {
@@ -16,7 +16,9 @@ class ConvertModel extends ModelAbstract
      */
     const TABLENAME = 'books';
 
-    // (deve ser maior que R$ 1.000,00 e menor que R$ 100.000,00)
+    /**
+     * (deve ser maior que R$ 1.000,00 e menor que R$ 100.000,00)
+     */
     const MIN_VALUE_CONSTRAINT = 1000;
     const MAX_VALUE_CONSTRAINT = 100000;
 
@@ -26,15 +28,15 @@ class ConvertModel extends ModelAbstract
      */
     public function isValidCode(string $code) : bool
     {
-        return (new MongoDBService)
-            ->filters(['type' => $code])
-            ->options([
-                'projection' => [
-                    '_id' => 0
-                ],
-            ])
-            ->query('currency_codes')
-            ->isValid();
+        return (new MongoDriver)
+                ->filters(['type' => $code])
+                ->options([
+                    'projection' => [
+                        '_id' => 0
+                    ],
+                ])
+                ->query('currency_codes')
+                ->isValid();
     }
 
     /**
@@ -42,7 +44,7 @@ class ConvertModel extends ModelAbstract
      */
     public function getConvertTaxes(): array
     {
-        return (new MongoDBService)->query('tax')->toArray();
+        return (new MongoDriver)->query('tax')->toArray();
     }
 
     /**

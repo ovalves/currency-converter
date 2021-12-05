@@ -7,7 +7,7 @@
  */
 
 use Selene\Model\ModelAbstract;
-use App\Services\MongoDBService;
+use Selene\Drivers\MongoDB\MongoDriver;
 
 class PaymentModel extends ModelAbstract
 {
@@ -23,7 +23,7 @@ class PaymentModel extends ModelAbstract
      */
     public function getMethods()
     {
-        return (new MongoDBService)->query('payment')->toArray();
+        return (new MongoDriver)->query('payment')->toArray();
     }
 
     /**
@@ -31,7 +31,7 @@ class PaymentModel extends ModelAbstract
      */
     public function getPaymentByType(int $type) : array
     {
-        return (new MongoDBService)
+        return (new MongoDriver)
                     ->filters(['type' => $type])
                     ->options([
                         'projection' => [
@@ -47,7 +47,7 @@ class PaymentModel extends ModelAbstract
      */
     public function isValidPayment(int $type) : bool
     {
-        return (new MongoDBService)
+        return (new MongoDriver)
                     ->filters(['type' => $type])
                     ->options([
                         'projection' => [

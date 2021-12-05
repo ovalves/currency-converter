@@ -19,8 +19,9 @@ class ProcessOrderTask
              * @see aqui estamos apenas calculando o valor das taxas da compra
              */
             $totalTax = array_sum($convertData['tax']);
-            $convertData['order_value'] = $value - $totalTax;
+            $convertData['value_with_tax'] = $value - $totalTax;
             $convertData['total_tax'] = $totalTax;
+            $convertData['value_converted'] = ($value - $totalTax) / $convertData['bid'];
             return $convertData;
         } catch (Exception $e) {
             log_error($e);
