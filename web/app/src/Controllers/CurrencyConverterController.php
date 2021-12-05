@@ -18,7 +18,7 @@ class CurrencyConverterController extends BaseController
     {
         try {
             $data = (new CurrencyConvertertAction)->run($request);
-            return $response->success(data: $data);
+            return $response->success($data);
         } catch (\Throwable $th) {
             return $response->error($th);
         }

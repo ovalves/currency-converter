@@ -1,6 +1,6 @@
 <?php
 /**
- * @author      Vinicius Oliveira <vinicius_o.a@live.com>
+ * @author    Vinicius Oliveira <vinicius_o.a@live.com>
  * @since     2021-06-10
  * @version   1.0.0
  */
