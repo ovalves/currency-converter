@@ -21,35 +21,16 @@ class CurrencyConverterController extends BaseController
         try {
             $data = (new CurrencyConvertertAction)->run($request);
             echo '<pre>';
-            var_dump($data);
+            var_dump ($data);
             die();
-
-            /**
-             * Os services irão implementar a mesma interface
-             * ServiceInterface
-             */
-
-            /**
-             * @todo chamar a api de conversão
-             * (new CurrencyConvertService())
-             *      ->to($code)
-             *      ->withValue($value)
-             *      ->apply();
-             */
 
             /**
              * @todo aplicar as taxas de pagamento na conversão
              * (new TaxPaymentService())
-             *      ->to($payment)
+             *      ->using($payment)
              *      ->withValue($value)
              *      ->apply($value);
              */
-            echo '<pre>';
-            var_dump($code);
-            var_dump($value);
-            var_dump($payment);
-            die();
-
             return $response->json(
                 [
                     'from' => (int) $from,
@@ -59,9 +40,6 @@ class CurrencyConverterController extends BaseController
                 $response::HTTP_OK
             );
         } catch (\Throwable $th) {
-            echo '<pre>';
-            var_dump($th->getMessage());
-            die();
             return $response->json(
                 [
                     'from' => (int) $from,

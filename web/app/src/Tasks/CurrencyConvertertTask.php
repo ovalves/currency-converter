@@ -3,13 +3,26 @@
 namespace App\Tasks;
 
 use Exception;
+use App\Services\CurrencyConvertService;
+use ConvertModel;
 
 class CurrencyConvertertTask
 {
-    public function create(array $data): bool
+    public function run(string $code, float $value): array
     {
         try {
-            // Do Something
+            $tax = (new ConvertModel)->getConvertTaxes();
+
+            /**
+             * @todo pegar a taxa de acordo com o valor de conversão
+             */
+            echo '<pre>';
+            var_dump ($tax);
+            die();
+            return (new CurrencyConvertService())
+                ->using($code)
+                ->withTax($value)
+                ->apply();
         } catch (Exception $e) {
             log_error($e);
             return false;

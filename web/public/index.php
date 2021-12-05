@@ -14,7 +14,7 @@ $app->route()->middleware([
 ])->group(function () use ($app) {
 
     // Rota de Conversão de tipo
-    $app->route()->get('/currency/convert', 'CurrencyConverterController@convert');
+    $app->route()->post('/currency/convert', 'CurrencyConverterController@convert');
 
     // Rota de Listagem dos tipos de pagamentos
     $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');

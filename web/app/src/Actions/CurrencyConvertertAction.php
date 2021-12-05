@@ -5,6 +5,7 @@ namespace App\Actions;
 use Exception;
 use Selene\Request\Request;
 use App\Traits\ConvertRequestTrait;
+use App\Tasks\CurrencyConvertertTask;
 use App\Exceptions\CurrencyConverterGeneralException;
 
 class CurrencyConvertertAction
@@ -14,29 +15,29 @@ class CurrencyConvertertAction
     public function run(Request $request): void
     {
         try {
-            $sanitizedData = $request->sanitizeInput([
-                'contrato',
-                'contrato.token',
+            $data = $request->sanitize([
+                'code',
+                'value',
+                'payment',
+                'email',
             ]);
 
-            echo '<pre>';
-            var_dump($sanitizedData);
-            var_dump($request);
-            die();
-
-            $params = $request->getQueryParams();
-
-            if (empty($params)) {
+            if (empty($data)) {
                 throw new CurrencyConverterGeneralException();
             }
 
-            $value = (float) $params['value'] ?? 0;
-            $payment = (int) $params['payment'] ?? null;
-            $code = $params['code'] ?? '';
+            $code = $data['code'] ?? '';
+            $value = (float) $data['value'] ?? 0;
+            $payment = (int) $data['payment'] ?? null;
 
             $this->throwErrorForRequestedValue($value);
             $this->throwErrorForRequestedCode($code);
             $this->throwErrorForRequestedPayment($payment);
+
+            $value = (new CurrencyConvertertTask)->run($code, $value);
+            echo '<pre>';
+            var_dump ($value);
+            die();
         } catch (Exception $e) {
             throw $e;
         }
