@@ -6,13 +6,17 @@ use Exception;
 use Selene\Request\Request;
 use App\Traits\ConvertRequestTrait;
 use App\Tasks\CurrencyConvertertTask;
+use App\Tasks\ApplyPaymentMethodTaxTask;
+use App\Tasks\ApplyCurrencyConvertertTaxTask;
+use App\Tasks\ProcessOrderTask;
+use App\Tasks\SaveOrderTask;
 use App\Exceptions\CurrencyConverterGeneralException;
 
 class CurrencyConvertertAction
 {
     use ConvertRequestTrait;
 
-    public function run(Request $request): void
+    public function run(Request $request): array
     {
         try {
             $data = $request->sanitize([
@@ -34,10 +38,13 @@ class CurrencyConvertertAction
             $this->throwErrorForRequestedCode($code);
             $this->throwErrorForRequestedPayment($payment);
 
-            $value = (new CurrencyConvertertTask)->run($code, $value);
-            echo '<pre>';
-            var_dump ($value);
-            die();
+            $convert = (new CurrencyConvertertTask)->run($code, $value);
+            $convert = (new ApplyCurrencyConvertertTaxTask)->run($convert, $value);
+            $convert = (new ApplyPaymentMethodTaxTask)->run($convert, $value, $payment);
+            $convert = (new ProcessOrderTask)->run($convert, $value);
+            $convert = (new SaveOrderTask)->run($convert, $payment);
+
+            return $convert;
         } catch (Exception $e) {
             throw $e;
         }

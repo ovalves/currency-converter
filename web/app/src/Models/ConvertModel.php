@@ -39,10 +39,8 @@ class ConvertModel extends ModelAbstract
 
     /**
      * Retorna as taxas de cobraça para a conversão do valor
-     *
-     * @return void
      */
-    public function getConvertTaxes()
+    public function getConvertTaxes(): array
     {
         return (new MongoDBService)->query('tax')->toArray();
     }

@@ -6,10 +6,10 @@ use Exception;
 use Selene\Http\Client;
 use App\Exceptions\CurrencyConvertException;
 
-final class CurrencyConvertService implements ServiceInterface
+final class CurrencyConvertService
 {
     private mixed $using;
-    private float $tax;
+    private float $value;
 
     public function using(mixed $using): self
     {
@@ -17,26 +17,31 @@ final class CurrencyConvertService implements ServiceInterface
         return $this;
     }
 
-    public function withTax(float $tax): self
+    public function withValue(float $value): self
     {
-        $this->tax = $tax;
+        $this->value = $value;
         return $this;
     }
 
     public function apply(): array
     {
         try {
-            echo '<pre>';
-            var_dump ($this->using);
-            var_dump ($this->tax);
-            die();
-            $request = (new Client('https://economia.awesomeapi.com.br'))->request(Client::GET, "/json/last/BRL-{$this->using}");
+            $request = (new Client('https://economia.awesomeapi.com.br'))->request(Client::GET, "/json/last/{$this->using}-BRL");
 
             if ($request->hasError()) {
                 throw new CurrencyConvertException();
             }
 
-            return $request->asArray();
+            $data = $request->asArray();
+            $data = reset($data);
+
+            return [
+                'codein' => 'BRL',
+                'code' => $this->using,
+                'bid' => $data['bid'],
+                'description' => $data['name'],
+                'value' => $this->value
+            ];
         } catch (Exception $e) {
             throw $e;
         }

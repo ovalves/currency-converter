@@ -5,6 +5,7 @@ namespace App\Services;
 use MongoDB\Driver\Query;
 use MongoDB\Driver\Manager;
 use MongoDB\Driver\Cursor;
+use MongoDB\Driver\BulkWrite;
 
 final class MongoDBService
 {
@@ -40,6 +41,17 @@ final class MongoDBService
         return $this;
     }
 
+    public function insert(string $collection, array $data)
+    {
+        $dbCollection = \env('MONGO_DATABASE') . '.' . $collection;
+
+        $bulk = new BulkWrite;
+        $bulk->insert($data);
+
+        $this->cursor = $this->getConnection()->executeBulkWrite($dbCollection, $bulk);
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->cursor->toArray();
@@ -50,7 +62,7 @@ final class MongoDBService
         return (bool) (false === empty($this->toArray()));
     }
 
-    public function getMongoCursor(): Cursor
+    public function getMongoCursor(): mixed
     {
         return $this->cursor;
     }

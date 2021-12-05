@@ -22,28 +22,24 @@ class CurrencyConverterController extends BaseController
             $data = (new CurrencyConvertertAction)->run($request);
             echo '<pre>';
             var_dump ($data);
-            die();
+            die('controller');
 
-            /**
-             * @todo aplicar as taxas de pagamento na conversão
-             * (new TaxPaymentService())
-             *      ->using($payment)
-             *      ->withValue($value)
-             *      ->apply($value);
-             */
             return $response->json(
                 [
-                    'from' => (int) $from,
-                    'size' => (int) $size,
-                    'data' => $users,
+                    'from' => (int) 0,
+                    'size' => (int) 0,
+                    'data' => [],
                 ],
                 $response::HTTP_OK
             );
         } catch (\Throwable $th) {
+            echo '<pre>';
+            var_dump ($th->getMessage());
+            die();
             return $response->json(
                 [
-                    'from' => (int) $from,
-                    'size' => (int) $size,
+                    'from' => (int) 0,
+                    'size' => (int) 0,
                     'data' => [],
                 ],
                 $response::HTTP_NOT_FOUND ?? 500

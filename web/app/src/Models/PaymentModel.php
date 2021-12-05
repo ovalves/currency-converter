@@ -27,12 +27,28 @@ class PaymentModel extends ModelAbstract
     }
 
     /**
-     * Retorna se o tipo de pagamento requerido é valido
+     * Retorna o pagamento por seu tipo
      */
-    public function isValidPayment(int $payment) : bool
+    public function getPaymentByType(int $type) : array
     {
         return (new MongoDBService)
-                    ->filters(['type' => $payment])
+                    ->filters(['type' => $type])
+                    ->options([
+                        'projection' => [
+                            '_id' => 0
+                        ],
+                    ])
+                    ->query('payment')
+                    ->toArray();
+    }
+
+    /**
+     * Retorna se o tipo de pagamento requerido é valido
+     */
+    public function isValidPayment(int $type) : bool
+    {
+        return (new MongoDBService)
+                    ->filters(['type' => $type])
                     ->options([
                         'projection' => [
                             '_id' => 0
