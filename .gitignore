@@ -9,6 +9,7 @@ web/app/vendor/
 web/app/doc/
 web/app/report/
 web/app/.env
+web/public/Views/Cache/*
 data/db/mysql
 data/db/mongodb
 .env

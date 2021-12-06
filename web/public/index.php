@@ -23,5 +23,6 @@ $app->route()->middleware([
     $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');
 
 
+    // Client App Routes
     $app->route()->get('/', 'HomeController@index');
 })->run();

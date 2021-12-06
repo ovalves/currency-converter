@@ -16,6 +16,11 @@ class HomeController extends BaseController
      */
     public function index(): View
     {
-        return $this->view()->render('home/home.php');
+        return $this->view()->render(
+            'home/home.html',
+            [
+                'pageTitle' => 'Dashboard'
+            ]
+        );
     }
 }
