@@ -13,6 +13,7 @@ return [
         ],
         DatabaseConstant::DEFAULT_DB => 'mysql',
     ],
-    'ENABLE_SESSION_CONTAINER' => false,
-    'ENABLE_AUTH_CONTAINER' => false,
+    ConfigConstant::ENABLE_SESSION_CONTAINER => false,
+    ConfigConstant::ENABLE_AUTH_CONTAINER => false,
+    ConfigConstant::ENABLE_CACHE_VIEWS => false,
 ];

@@ -25,4 +25,5 @@ $app->route()->middleware([
 
     // Client App Routes
     $app->route()->get('/', 'HomeController@index');
+    $app->route()->get('/client/currency/convert', 'CurrencyController@index');
 })->run();

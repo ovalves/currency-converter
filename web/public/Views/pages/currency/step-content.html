@@ -1,0 +1,38 @@
+<div class="bs-stepper-content">
+
+    <!-- Moedas para conversão -->
+    <div id="currency-part" class="content" role="tabpanel" aria-labelledby="currency-part-trigger">
+        <div class="form-group">
+            <label for="codein">De: Real Brasileiro</label>
+            <input
+                type="text"
+                disabled="disabled"
+                value="BRL"
+                class="form-control" id="codein"
+                placeholder="Real Brasileiro">
+        </div>
+        <div class="form-group">
+            <label for="codeout">Para: Moeda de Conversão</label>
+            <select class="form-control select2bs4" style="width: 100%;">
+                <option selected="selected">Alabama</option>
+                <option>Alaska</option>
+                <option>California</option>
+                <option>Delaware</option>
+                <option>Tennessee</option>
+                <option>Texas</option>
+                <option>Washington</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="stepper.next()">Próximo</button>
+    </div>
+
+    <!-- Formas de Pagamento -->
+    <div id="payment-part" class="content" role="tabpanel" aria-labelledby="payment-part-trigger">
+
+        <div class="form-group">
+            {% include /pages/currency/payment-method.html %}
+        </div>
+
+        <button class="btn btn-primary" onclick="stepper.previous()">Voltar</button>
+    </div>
+</div>

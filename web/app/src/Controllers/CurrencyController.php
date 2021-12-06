@@ -9,7 +9,7 @@
 use Selene\Controllers\BaseController;
 use Selene\Render\View;
 
-class HomeController extends BaseController
+class CurrencyController extends BaseController
 {
     /**
      * Index Action.
@@ -17,9 +17,9 @@ class HomeController extends BaseController
     public function index(): View
     {
         return $this->view()->render(
-            'pages/dashboard.html',
+            'pages/currency.html',
             [
-                'pageTitle' => 'Dashboard'
+                'pageTitle' => 'Conversor de Moedas'
             ]
         );
     }
