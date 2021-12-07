@@ -11,9 +11,6 @@ use Selene\Render\View;
 
 class HomeController extends BaseController
 {
-    /**
-     * Index Action.
-     */
     public function index(): View
     {
         return $this->view()->render(

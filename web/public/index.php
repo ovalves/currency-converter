@@ -25,5 +25,15 @@ $app->route()->middleware([
 
     // Client App Routes
     $app->route()->get('/', 'HomeController@index');
+    $app->route()->get('/client/signin', 'SignController@signin');
+    $app->route()->get('/client/signup', 'SignController@signup');
+    $app->route()->get('/client/forgot/password', 'SignController@forgotPassword');
     $app->route()->get('/client/currency/convert', 'CurrencyController@index');
+
+
+    // Login do usuário
+    $app->route()->post('/client/account/signin', 'UserSignInAccountController@signin');
+
+    // Criar conta de usuário
+    $app->route()->post('/client/account/register', 'UserRegisterAccountController@register');
 })->run();

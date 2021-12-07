@@ -14,10 +14,12 @@ class UsersGateway extends GatewayAbstract
     /**
      * Busca os usuarios utilizando o campo name.
      */
-    public function findUsersByName(string $where, int $from, int $size): array
+    public function create(array $data): array
     {
         try {
-            return $this->findUsers('name', $where, $from, $size);
+            $this->insert($data)
+                ->table('users')
+                ->execute();
         } catch (Exception $e) {
             throw $e;
         }
