@@ -16,4 +16,9 @@ class UserSignInAction
 
         return (new UserSignInTask)->run($data);
     }
+
+    public function logout(): bool
+    {
+        return (new UserSignInTask)->logout();
+    }
 }

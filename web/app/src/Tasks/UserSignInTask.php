@@ -15,4 +15,13 @@ class UserSignInTask
             throw $th;
         }
     }
+
+    public function logout(): bool
+    {
+        try {
+            return app()->auth()->logout();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

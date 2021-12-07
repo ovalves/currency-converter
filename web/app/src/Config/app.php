@@ -14,7 +14,10 @@ return [
         DatabaseConstant::DEFAULT_DB => 'mysql',
     ],
     ConfigConstant::AUTH => [
-        ConfigConstant::AUTH_TABLE_NAME => 'users'
+        ConfigConstant::AUTH_TABLE_NAME => 'users',
+        ConfigConstant::AUTH_LOGIN_URL => env('APP_URL') . '/client/signin',
+        ConfigConstant::AUTH_REDIRECT_SUCCESS_LOGIN => env('APP_URL'),
+        ConfigConstant::AUTH_REDIRECT_FAILED_LOGIN => env('APP_URL') . '/client/signin',
     ],
     ConfigConstant::SESSION => [
         ConfigConstant::SESSION_TABLE_NAME => 'session',

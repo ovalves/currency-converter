@@ -29,4 +29,11 @@ class UserSignInAccountController extends BaseController
             die('as');
         }
     }
+
+    public function logout(): mixed
+    {
+        (new UserSignInAction)->logout();
+        header('Location:' . env('APP_URL') . '/client/signin');
+        die;
+    }
 }
