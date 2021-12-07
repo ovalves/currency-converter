@@ -3,7 +3,7 @@
 namespace App\Tasks;
 
 use Exception;
-use ConvertModel;
+use TaxModel;
 use App\Services\ApplyCurrencyConvertTaxService;
 use App\Exceptions\CurrencyConvertException;
 
@@ -12,7 +12,7 @@ class ApplyCurrencyConvertertTaxTask
     public function run(array $convertData, float $value): array
     {
         try {
-            $taxes = (new ConvertModel)->getConvertTaxes();
+            $taxes = (new TaxModel)->getConvertTaxes();
 
             $percent = null;
             array_walk($taxes, function ($tax) use ($value, &$percent) {

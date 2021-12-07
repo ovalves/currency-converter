@@ -9,40 +9,42 @@ require __DIR__.'/../app/vendor/autoload.php';
 
 $app = Selene\App\Factory::create('/var/www/html/app/');
 
-/**
- * Definição das rotas não autenticadas
- */
+/*
+|--------------------------------------------------------------------------
+| Definição das rotas WEB - NÃO Autenticadas
+|--------------------------------------------------------------------------
+*/
 $app->route()->group('guest', function () use ($app) {
     $app->route()->get('/client/signin', 'SignController@signin');
     $app->route()->get('/client/signup', 'SignController@signup');
     $app->route()->get('/client/forgot/password', 'SignController@forgotPassword');
-
-    // Login do usuário
     $app->route()->post('/client/account/signin', 'UserSignInAccountController@signin');
-
-    // Criar conta de usuário
     $app->route()->post('/client/account/register', 'UserRegisterAccountController@register');
 });
 
-/**
- * Definição das rotas autenticadas
- */
+/*
+|--------------------------------------------------------------------------
+| Definição das rotas WEB - Autenticadas
+|--------------------------------------------------------------------------
+*/
 $app->route()->group('auth', function () use ($app) {
     $app->route()->middleware([new Selene\Middleware\Handler\Auth]);
-    // Conversão de moedas
-    $app->route()->post('/currency/convert', 'CurrencyConverterController@convert');
-
-    // Listagem dos pedidos de conversão dos clientes
-    $app->route()->get('/orders', 'OrdersController@orders');
-
-    // Listagem dos tipos de pagamentos
-    $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');
-
-    // Client App Routes
     $app->route()->get('/', 'HomeController@index');
     $app->route()->get('/client/convert/history', 'HistoryController@index');
     $app->route()->get('/client/logout', 'UserSignInAccountController@logout');
     $app->route()->get('/client/currency/convert', 'CurrencyController@index');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Definição das rotas de API
+|--------------------------------------------------------------------------
+*/
+$app->route()->group('api', function () use ($app) {
+    $app->route()->post('/currency/convert', 'CurrencyConverterController@convert');
+    $app->route()->get('/orders', 'OrdersController@orders');
+    $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');
+    $app->route()->get('/currency/codes', 'CurrencyCodesController@codes');
 });
 
 $app->route()->run();

@@ -22,3 +22,24 @@
     </div>
 </div>
 {% endblock %}
+
+<script>
+
+    getCurrencyCodes();
+
+    function getCurrencyCodes() {
+        $.ajax({
+            url: "{{ env('APP_URL') }}/currency/codes",
+            success: function(response) {
+                let html = '<option selected="selected">Selecionar Moeda</option>';
+
+                for (let [key, value] of Object.entries(response.data)) {
+                    html += `<option value="${value.type}">${value.label} - ${value.type}</option>`;
+                }
+
+                $("#codeout-select").html(html);
+            }
+        });
+    }
+
+</script>

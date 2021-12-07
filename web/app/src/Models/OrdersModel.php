@@ -20,7 +20,7 @@ class OrdersModel extends ModelAbstract
         try {
             return (new MongoDriver)
                 // ->filters(['type' => $type])
-                ->query('orders')
+                ->query(self::TABLENAME)
                 ->toArray();
         } catch (\Throwable $th) {
             log_error($th);
@@ -34,7 +34,7 @@ class OrdersModel extends ModelAbstract
     public function saveOrder(array $order) : bool
     {
         try {
-            (new MongoDriver)->insert('orders', $order);
+            (new MongoDriver)->insert(self::TABLENAME, $order);
             return true;
         } catch (\Throwable $th) {
             log_error($th);

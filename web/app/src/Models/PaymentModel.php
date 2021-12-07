@@ -23,7 +23,7 @@ class PaymentModel extends ModelAbstract
      */
     public function getMethods()
     {
-        return (new MongoDriver)->query('payment')->toArray();
+        return (new MongoDriver)->query(self::TABLENAME)->toArray();
     }
 
     /**
@@ -38,7 +38,7 @@ class PaymentModel extends ModelAbstract
                             '_id' => 0
                         ],
                     ])
-                    ->query('payment')
+                    ->query(self::TABLENAME)
                     ->toArray();
     }
 
@@ -54,7 +54,7 @@ class PaymentModel extends ModelAbstract
                             '_id' => 0
                         ],
                     ])
-                    ->query('payment')
+                    ->query(self::TABLENAME)
                     ->isValid();
     }
 }

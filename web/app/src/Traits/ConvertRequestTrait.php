@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use ConvertModel;
 use PaymentModel;
+use CurrencyCodesModel;
 use App\Exceptions\PaymentException;
 use App\Exceptions\ConvertCodeException;
 use App\Exceptions\ValueOutOfRangeException;
@@ -22,7 +23,7 @@ trait ConvertRequestTrait
 
     public function throwErrorForRequestedCode(string $code): void
     {
-        if (false === (new ConvertModel)->isValidCode($code)) {
+        if (false === (new CurrencyCodesModel)->isValidCode($code)) {
             throw new ConvertCodeException();
         };
     }
