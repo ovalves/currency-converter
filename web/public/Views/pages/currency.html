@@ -26,6 +26,7 @@
 <script>
 
     getCurrencyCodes();
+    getPaymentTaxes();
 
     function getCurrencyCodes() {
         $.ajax({
@@ -38,6 +39,130 @@
                 }
 
                 $("#codeout-select").html(html);
+            }
+        });
+    }
+
+    let boleto = false;
+    let creditCard = false;
+    let selectedPaymentType = null;
+    let payments = null;
+    const BOLETO_TYPE = 1;
+    const BOLETO_LABEL = 'Boleto';
+    const CREDIT_CARD_TYPE = 2;
+    const CREDIT_CARD_LABEL = 'Cartão de crédito';
+    let codeout = null;
+    let codeinValue = null;
+
+    $('#credit-card-button').on('click', function () {
+        $(this).removeClass('btn-light');
+        $('#boleto-button').addClass('btn-light');
+        $(this).addClass('btn-success');
+        checkPaymentMethod(CREDIT_CARD_TYPE, CREDIT_CARD_LABEL);
+    });
+
+    $('#boleto-button').on('click', function () {
+        $(this).removeClass('btn-light');
+        $('#credit-card-button').addClass('btn-light');
+        $(this).addClass('btn-success');
+        checkPaymentMethod(BOLETO_TYPE, BOLETO_LABEL);
+    });
+
+    function checkPaymentMethod(type, label) {
+        selectedPaymentType = type;
+        payment = payments.filter(({ type }) => type ==  selectedPaymentType)[0].tax;
+        $(".payment-percent-tax").html(payment);
+        $("#payment-type").html(label);
+    }
+
+    $("#next").on('click', function () {
+        codeinValue = $("#codein-value").val();
+
+        $("#convert-value").html(
+            new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                codeinValue
+            )
+        );
+
+        codeout = $("#codeout-select option:selected" ).val();
+        $("#codein-codeout").html(`BRL - ${codeout}`);
+    });
+
+    function getPaymentTaxes() {
+        $.ajax({
+            type: 'GET',
+            url: "{{ env('APP_URL') }}/payment/types",
+            success: function(response) {
+                payments = response.data;
+                $('#boleto-button').click();
+            }
+        });
+    }
+
+    $("#calculate").on('click', function () {
+        preload('show');
+        calculateConversion();
+    });
+
+    function preload(visibilty) {
+        const $preloader = $('.preloader')
+
+        if ($preloader) {
+            if (visibilty == 'show') {
+                $preloader.css('height', '100vh');
+                $preloader.children().show();
+                return;
+            }
+
+            $preloader.css('height', '0');
+            $preloader.children().hide();
+        }
+    }
+
+    function calculateConversion() {
+        $.ajax({
+            type: 'POST',
+            processData: false,
+            url: "{{ env('APP_URL') }}/currency/convert",
+            data: JSON.stringify({
+                code: codeout,
+                value: codeinValue,
+                payment: selectedPaymentType,
+                email: true
+            }),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(response) {
+                preload('hide');
+                $("#payment-tax").html(
+                    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                        response.data.tax.payment
+                    )
+                );
+
+                $("#convert-tax").html(
+                    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                        response.data.tax.convert
+                    )
+                );
+
+                $("#codein-codeout-value").html(
+                    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: response.data.code }).format(
+                        response.data.value_converted
+                    )
+                );
+
+                $("#codeout").html(response.data.code);
+
+                $("#convert-total").html(
+                    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                        response.data.value_with_tax
+                    )
+                );
+            },
+            error: function (err) {
+                preload('hide');
+                console.log(err);
             }
         });
     }
