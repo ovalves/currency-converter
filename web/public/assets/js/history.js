@@ -1,14 +1,5 @@
 class History {
     constructor() {
-        this.BOLETO_TYPE = 1;
-        this.BOLETO_LABEL = 'Boleto';
-        this.CREDIT_CARD_TYPE = 2;
-        this.CREDIT_CARD_LABEL = 'Cartão de crédito';
-        this.selectedPaymentType = null;
-        this.payments = null;
-        this.codeout = null;
-        this.codeinValue = null;
-
         this.init();
     }
 
@@ -40,32 +31,6 @@ class History {
             .container()
             .appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
-    }
-
-    getPaymentTaxes() {
-        let that = this;
-        $.ajax({
-            type: 'GET',
-            url: `${API_URL}/payment/types`,
-            success: function (response) {
-                that.payments = response.data;
-                $('#boleto-button').click();
-            }
-        });
-    }
-
-    preload(visibilty) {
-        const $preloader = $('.preloader')
-        if ($preloader) {
-            if (visibilty == 'show') {
-                $preloader.css('height', '100vh');
-                $preloader.children().show();
-                return;
-            }
-
-            $preloader.css('height', '0');
-            $preloader.children().hide();
-        }
     }
 }
 
