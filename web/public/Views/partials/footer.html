@@ -23,7 +23,6 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button)
-
 </script>
 <!-- Bootstrap 4 -->
 <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -72,16 +71,16 @@
         window.stepper = new Stepper(document.querySelector('.bs-stepper'))
     });
 
-    $(function () {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    });
+
+
+    const API_URL = "{{ env('APP_URL') }}";
+    const USER_ID = "{{ app()->session()->getUserData('user_id') }}";
 
 </script>
+
+<script src="/assets/js/currency.js"></script>
+<script src="/assets/js/history.js"></script>
+
 </body>
 
 </html>

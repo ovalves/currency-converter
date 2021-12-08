@@ -7,10 +7,10 @@ use OrdersModel;
 
 class RetrieveOrderTask
 {
-    public function run(int $userId, string $orderID): array
+    public function run(int $userId): array
     {
         try {
-            return (new OrdersModel)->findOrder($userId, $orderID);
+            return (new OrdersModel)->findOrder($userId);
         } catch (Exception $e) {
             log_error($e);
             return [];

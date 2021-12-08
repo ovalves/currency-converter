@@ -15,7 +15,7 @@ class OrdersModel extends ModelAbstract
      *
      * Retorna as ordens do histórico
      */
-    public function findOrder(int $userId, string $orderID) : array
+    public function findOrder(int $userId) : array
     {
         try {
             return (new MongoDriver)

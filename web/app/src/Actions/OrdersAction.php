@@ -16,8 +16,7 @@ class OrdersAction
     {
         try {
             $data = $request->sanitize([
-                'user_id',
-                'order_id'
+                'user_id'
             ]);
 
             if (empty($data)) {
@@ -25,9 +24,8 @@ class OrdersAction
             }
 
             $userId = (float) $data['user_id'] ?? null;
-            $orderID = (int) $data['order_id'] ?? null;
 
-            return (new RetrieveOrderTask)->run($userId, $orderID);
+            return (new RetrieveOrderTask)->run($userId);
         } catch (Exception $e) {
             throw $e;
         }
