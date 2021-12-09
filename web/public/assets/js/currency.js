@@ -99,7 +99,6 @@ class Currency {
                     $(`#tax-${element.type}-value`).val(element.tax)
                 });
 
-                console.log(that.payments);
                 $('#boleto-button').click();
             }
         });
@@ -144,6 +143,7 @@ class Currency {
             dataType: 'json',
             success: function (response) {
                 that.preload('hide');
+                toastr.success('Conversão realizada com sucesso.');
                 $("#payment-tax").html(
                     new Intl.NumberFormat('pt-BR', {
                         style: 'currency',
@@ -184,7 +184,7 @@ class Currency {
             },
             error: function (err) {
                 that.preload('hide');
-                console.log(err);
+                toastr.error('Erro ao realizar a conversão para a moeda desejada.');
             }
         });
     }
@@ -203,10 +203,11 @@ class Currency {
             dataType: 'json',
             success: function (response) {
                 that.preload('hide');
+                toastr.success('Taxa de pagamento atualizada com sucesso.');
             },
             error: function (err) {
                 that.preload('hide');
-                console.log(err);
+                toastr.error('Erro ao atualizar a taxa de pagamento.');
             }
         });
     }
