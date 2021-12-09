@@ -29,10 +29,9 @@ $app->route()->group('guest', function () use ($app) {
 */
 $app->route()->group('auth', function () use ($app) {
     $app->route()->middleware([new Selene\Middleware\Handler\Auth]);
-    $app->route()->get('/', 'HomeController@index');
+    $app->route()->get('/', 'CurrencyController@index');
     $app->route()->get('/client/convert/history', 'HistoryController@index');
     $app->route()->get('/client/logout', 'UserSignInAccountController@logout');
-    $app->route()->get('/client/currency/convert', 'CurrencyController@index');
     $app->route()->get('/admin/config', 'AdminConfigController@index');
 });
 
