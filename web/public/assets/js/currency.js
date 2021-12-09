@@ -54,6 +54,20 @@ class Currency {
             that.preload('show');
             that.calculateConversion();
         });
+
+        $("#updateTax").on('click', function () {
+            let tax1 = {
+                type: 1,
+                value: $("#tax-1-value").val(),
+            }
+
+            let tax2 = {
+                type: 2,
+                value: $("#tax-2-value").val(),
+            }
+
+            that.updateTaxes(tax1, tax2);
+        });
     }
 
     getCurrencyCodes() {
@@ -78,6 +92,14 @@ class Currency {
             url: `${API_URL}/payment/types`,
             success: function (response) {
                 that.payments = response.data;
+
+                that.payments.forEach(element => {
+                    $(`#tax-${element.type}-label`).html(element.label)
+                    $(`#tax-${element.type}-value`).html(element.tax)
+                    $(`#tax-${element.type}-value`).val(element.tax)
+                });
+
+                console.log(that.payments);
                 $('#boleto-button').click();
             }
         });
@@ -112,6 +134,7 @@ class Currency {
             processData: false,
             url: `${API_URL}/currency/convert`,
             data: JSON.stringify({
+                user: USER_ID,
                 code: that.codeout,
                 value: that.codeinValue,
                 payment: that.selectedPaymentType,
@@ -158,6 +181,28 @@ class Currency {
                         response.data.value_with_tax
                     )
                 );
+            },
+            error: function (err) {
+                that.preload('hide');
+                console.log(err);
+            }
+        });
+    }
+
+    updateTaxes(tax1, tax2) {
+        let that = this;
+        $.ajax({
+            type: 'POST',
+            processData: false,
+            url: `${API_URL}/admin/config/update/taxes`,
+            data: JSON.stringify({
+                tax1: tax1,
+                tax2: tax2,
+            }),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (response) {
+                that.preload('hide');
             },
             error: function (err) {
                 that.preload('hide');

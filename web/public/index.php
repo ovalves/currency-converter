@@ -33,6 +33,7 @@ $app->route()->group('auth', function () use ($app) {
     $app->route()->get('/client/convert/history', 'HistoryController@index');
     $app->route()->get('/client/logout', 'UserSignInAccountController@logout');
     $app->route()->get('/client/currency/convert', 'CurrencyController@index');
+    $app->route()->get('/admin/config', 'AdminConfigController@index');
 });
 
 /*
@@ -45,6 +46,7 @@ $app->route()->group('api', function () use ($app) {
     $app->route()->get('/orders', 'OrdersController@orders');
     $app->route()->get('/payment/types', 'PaymentController@getPaymentMethods');
     $app->route()->get('/currency/codes', 'CurrencyCodesController@codes');
+    $app->route()->post('/admin/config/update/taxes', 'AdminConfigController@updateTaxes');
 });
 
 $app->route()->run();

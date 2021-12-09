@@ -21,19 +21,27 @@ class UserSignInAccountController extends BaseController
             $signedIn = (new UserSignInAction)->run($request);
 
             if ($signedIn) {
-                header('Location:' . env('APP_URL'));
-                die;
+                redirect()
+                    ->to(env('APP_URL'))
+                    ->message('success', 'Logado com sucesso!')
+                    ->go();
             }
         } catch (\Throwable $th) {
-            header('Location:' . env('APP_URL') . '/client/signup');
-            die('as');
+            error_log($th->getMessage());
+        } finally {
+            redirect()
+                ->message('failed', 'Erro ao fazer login. Usuário ou senha incorreta!')
+                ->back();
         }
     }
 
     public function logout(): mixed
     {
         (new UserSignInAction)->logout();
-        header('Location:' . env('APP_URL') . '/client/signin');
-        die;
+
+        redirect()
+            ->to(env('APP_URL') . '/client/signin')
+            ->message('success', 'Logado com sucesso!')
+            ->go();
     }
 }

@@ -59,6 +59,15 @@
                     </a>
                 </li>
 
+                <!-- Histórico -->
+                {% if (app()->session()->getUserData('is_admin')): %}
+                    <li class="nav-item">
+                        <a href="/admin/config" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <p>Configurar taxas</p>
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     </div>

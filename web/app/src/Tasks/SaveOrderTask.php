@@ -9,7 +9,7 @@ use App\Exceptions\PaymentMethodBuilderException;
 
 class SaveOrderTask
 {
-    public function run(array $convertData, int $paymentType): array
+    public function run(array $convertData, int $paymentType, int $user): array
     {
         try {
             $payment = (new PaymentModel)->getPaymentByType($paymentType);
@@ -19,10 +19,7 @@ class SaveOrderTask
                 throw new PaymentMethodBuilderException();
             }
 
-            /**
-             * @todo Realizar a ordem de compra da conversão das moedas
-             * @see aqui estamos apenas adicionando o label do tipo de pagamento
-             */
+            $convertData['user_id'] = $user;
             $convertData['payment'] = $payment->label;
             if ((new OrdersModel)->saveOrder($convertData)) {
                 return $convertData;

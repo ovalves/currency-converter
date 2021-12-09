@@ -37,17 +37,21 @@ CREATE TABLE IF NOT EXISTS `session` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `fullname` varchar(2000) NOT NULL,
-  `password` varchar(2000) NOT NULL,
-  `time_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `time_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `email` varchar(191) NOT NULL,
+  `fullname` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
+  `time_created` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `time_updated` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `unique_email` (`email`),
   KEY `time_created` (`time_created`),
   KEY `time_updated` (`time_updated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `users` (`user_id`, `is_admin`, `email`, `fullname`, `password`, `time_created`, `time_updated`) VALUES
+	(1, 1, 'admin@oliveiratrust.com.br', 'admin oliveiratrust', '$argon2id$v=19$m=65536,t=2,p=1$uGf+zt21exD8eUR2r2P2Mg$1hhfMJ2eIdxoG/xcy+Pc2y5AJ+0sODg9liLU06SqHYc', NULL, NULL),
+	(2, 0, 'cliente@oliveiratrust.com.br', 'cliente oliveiratrust', '$argon2id$v=19$m=65536,t=2,p=1$WZZUzjSaTOeV6SagPq1x0Q$QRaU0XJWJRQvYMPZ7L2xu3bHmo3xu7wAE33JPLc8N+s', NULL, NULL);
 -- Dumping data for table currency_converter.users: ~0 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

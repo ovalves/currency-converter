@@ -11,15 +11,13 @@ class OrdersModel extends ModelAbstract
     const TABLENAME = 'orders';
 
     /**
-     * @todo adicionar os filtros por usuário e ordem
-     *
      * Retorna as ordens do histórico
      */
     public function findOrder(int $userId) : array
     {
         try {
             return (new MongoDriver)
-                // ->filters(['type' => $type])
+                ->filters(['user_id' => $userId])
                 ->query(self::TABLENAME)
                 ->toArray();
         } catch (\Throwable $th) {

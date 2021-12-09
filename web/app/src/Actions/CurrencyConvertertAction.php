@@ -20,6 +20,7 @@ class CurrencyConvertertAction
     {
         try {
             $data = $request->sanitize([
+                'user',
                 'code',
                 'value',
                 'payment',
@@ -30,10 +31,12 @@ class CurrencyConvertertAction
                 throw new CurrencyConverterGeneralException();
             }
 
-            $code = $data['code'] ?? '';
+            $user = (int) $data['user'] ?? 0;
+            $code = (string) $data['code'] ?? '';
             $value = (float) $data['value'] ?? 0;
             $payment = (int) $data['payment'] ?? null;
 
+            $this->throwErrorForRequestedUser($user);
             $this->throwErrorForRequestedValue($value);
             $this->throwErrorForRequestedCode($code);
             $this->throwErrorForRequestedPayment($payment);
@@ -42,7 +45,7 @@ class CurrencyConvertertAction
             $convert = (new ApplyCurrencyConvertertTaxTask)->run($convert, $value);
             $convert = (new ApplyPaymentMethodTaxTask)->run($convert, $value, $payment);
             $convert = (new ProcessOrderTask)->run($convert, $value);
-            $convert = (new SaveOrderTask)->run($convert, $payment);
+            $convert = (new SaveOrderTask)->run($convert, $payment, $user);
 
             return $convert;
         } catch (Exception $e) {

@@ -57,4 +57,24 @@ class PaymentModel extends ModelAbstract
                     ->query(self::TABLENAME)
                     ->isValid();
     }
+
+
+    /**
+     * Atualiza as taxas de cobraça para a conversão do valor
+     */
+    public function updatePaymentTaxes(array $taxes): void
+    {
+        try {
+            foreach ($taxes as $tax) {
+                if (!is_float($tax['value']) && !is_int($tax['type'])) {
+                    continue;
+                }
+
+                (new MongoDriver)->update(self::TABLENAME, ['type' => $tax['type']], ['tax' => $tax['value']]);
+            }
+        } catch (\Throwable $th) {
+            log_error($th);
+            throw $th;
+        }
+    }
 }

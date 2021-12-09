@@ -4,7 +4,6 @@ class History {
     }
 
     init() {
-        this.getPaymentTaxes();
         this.bindUI();
     }
 

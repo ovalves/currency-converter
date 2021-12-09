@@ -8,6 +8,7 @@ use CurrencyCodesModel;
 use App\Exceptions\PaymentException;
 use App\Exceptions\ConvertCodeException;
 use App\Exceptions\ValueOutOfRangeException;
+use App\Exceptions\InvalidUserException;
 
 trait ConvertRequestTrait
 {
@@ -18,6 +19,13 @@ trait ConvertRequestTrait
          */
         if ($value < ConvertModel::MIN_VALUE_CONSTRAINT || $value > ConvertModel::MAX_VALUE_CONSTRAINT) {
             throw new ValueOutOfRangeException();
+        }
+    }
+
+    public function throwErrorForRequestedUser(int $user): void
+    {
+        if ($user < 1) {
+            throw new InvalidUserException();
         }
     }
 
