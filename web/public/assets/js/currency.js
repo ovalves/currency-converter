@@ -87,10 +87,12 @@ class Currency {
 
     getPaymentTaxes() {
         let that = this;
+        that.preload('show');
         $.ajax({
             type: 'GET',
             url: `${API_URL}/payment/types`,
             success: function (response) {
+                that.preload('hide');
                 that.payments = response.data;
 
                 that.payments.forEach(element => {
