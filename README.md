@@ -1,5 +1,4 @@
-
-# Desafio de Busca utilizando o selene framework
+# Desafio de Conversão Monetária
 
 - [Desafio de Busca utilizando o selene framework](#desafio-de-busca-utilizando-o-selene-framework)
   - [Introdução](#introdução)
@@ -39,16 +38,81 @@ ___
 
 ## Introdução
 
-Este repositório provê uma API para busca de usuário. Os endpoints definidos nesta API listam os dados de usuários com base em seu nome e em seu nome de usuário.
+Este repositório provê uma aplicação cliente, onde é possível realizar as ações de conversão de moeda, visualizar histório de conversões, etc. O repositório provê também uma API para busca das cotações de moedas para conversão.
+___
+
+## Tecnologias utilizadas
+
+* PHP 8.1
+* Framework PHP [Selene](https://github.com/ovalves/selene).
+* Mysql
+    * Guarda os dados de criação de usuários
+    * Guarda os dados de sessão
+* MongoDB
+    * Guarda os dados das conversões realizadas
+    * Guarda o histórico das conversões
+    * Guarda as taxas aplicadas nas conversões
+    * Guarda os códigos das moedas para a realização das conversões
+* nginx
+* PHP-FPM
+* Docker
+* HTML5
+* CSS3
+* Javascript (Jquery)
+___
+
+## Como rodar o projeto
+PS.: Utilize os comando do Make para rodar o projeto mais facilmente
+
+* Copie o arquivo .env.example para .env
+* Use o comando make start-with-db no seu terminal
+    * Este comando irá criar a base de dados do mysql e irá subir todos os serviços do docker
+* Crie as collections (currency_codes, payment e tax) do MongoDB. As collections estão localizadas em data/mongo-collections
+* Acesse o projeto no seu navegador http://localhost:8000
+    * Acessando como admin
+        * email: admin@oliveiratrust.com.br
+        * senha: admin
+    * Acessando como cliente
+        * email: cliente@oliveiratrust.com.br
+        * senha: cliente
+
+### Para rodar o dump do mysql sem usar o makefile
+```bash
+docker exec -i ID_DO_CONTAINER mysql -uroot -proot < data/db/dumps/selene.sql
+```
+
 ___
 
 ## Conceitos
 
-Esta API utiliza como base a linguagem PHP e o [Selene](https://github.com/ovalves/selene) framework.
+Como definição para a resolução do problema de conversão monetária. Temos:
 
-Como definição para a resolução do problema de busca de usuários. Temos:
+* Deve ser possível escolher uma moeda estrangeira entre pelo menos 2 opções
+* O seu valor de compra deve ser **maior** que R$ 1.000 e **menor** que R$ 100.000,00
+* Deve ter formas de pagamento em **boleto** ou **cartão de crédito**
+* Deve exibir no final da operação: O valor que será adquirido na **moeda de destino** e as **taxas aplicadas**;
 
-* Alguns usuários possuem maior prioridade, portanto, primeiro devemos identificar esses usuários e então priorizá-los no retorno da API
+___
+
+## Regras do desafio
+
+### Usabilidade
+- Usuário deve informar 3 informações em tela
+- moeda de destino
+- valor para conversão
+- forma de pagamento.
+- A nossa moeda nacional BRL será usada como moeda base na conversão.
+
+### Regras de négocio
+- Moeda de origem BRL;
+- Informar uma moeda de compra que não seja BRL (exibir no mínimo 2 opções);
+- Valor da Compra em BRL (deve ser maior que R$ 1.000,00 e menor que R$ 100.000,00)
+- Formas de pagamento (taxas aplicadas no valor da compra e aceitar apenas as opções abaixo)
+    - Para pagamentos em boleto, taxa de 1,45%
+    - Para pagamentos em cartão de crédito, taxa de 7,63%
+- Aplicar taxa de 2% pela conversão para valores abaixo de R$ 3.000,00 e 1% para valores maiores que R$ 3.000,00,
+essa taxa deve ser aplicada apenas no valor da compra e não sobre o valor já com a taxa de forma de pagamento.
+
 ___
 
 ## Instalação
@@ -68,18 +132,20 @@ ___
 
 * [Nginx](https://hub.docker.com/_/nginx/)
 * [MySQL](https://hub.docker.com/_/mysql/)
-* [PHP-FPM](https://hub.docker.com/r/nanoninja/php-fpm/)
+* [MongoDB](https://hub.docker.com/_/mongo)
+* [PHP-FPM](https://hub.docker.com/r/devilbox/php-fpm/)
 * [Composer](https://hub.docker.com/_/composer/)
 * [PHPMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/)
 
 As seguintes portas são utilizadas neste projeto:
 
-| Server     | Port |
-|------------|------|
-| MySQL      | 8989 |
-| PHPMyAdmin | 8080 |
-| Nginx      | 8000 |
-| Nginx SSL  | 3000 |
+| Server     | Port  |
+|------------|-------|
+| MySQL      | 8989  |
+| MongoDB    | 27017 |
+| PHPMyAdmin | 8080  |
+| Nginx      | 8000  |
+| Nginx SSL  | 3000  |
 ___
 
 ### Clonando o projeto
@@ -103,9 +169,10 @@ ___
 
 ```sh
 ├── data
-│   └── db
-│       ├── dumps
-│       └── mysql
+│   ├── db
+│   │   ├── dumps
+│   │   └── mysql
+│   └── mongo-collections
 ├── etc
 │   ├── nginx
 │   │   ├── default.conf
@@ -113,17 +180,28 @@ ___
 │   ├── php
 │   │   └── php.ini
 │   └── ssl
+├── storage
+│   └── logs
 ├── web
 │   ├── app
 │   │   ├── composer.json
 │   │   ├── phpunit.xml
 │   │   ├── .php-cs-fixer.php
 │   │   ├── src
+│   │   │   ├── Actions
 │   │   │   ├── Config
 │   │   │   ├── Controllers
+│   │   │   ├── Events
+│   │   │   ├── Exceptions
 │   │   │   ├── Gateway
+│   │   │   ├── Mails
 │   │   │   ├── Models
+│   │   │   ├── Notifications
+│   │   │   ├── Services
 │   │   │   └── Storage
+│   │   │   └── Tasks
+│   │   │   └── Tests
+│   │   │   └── Traits
 │   │   └── tests
 │   │       └── Api
 │   ├── conf
@@ -132,6 +210,9 @@ ___
 │       ├── Views
 │       └── index.php
 ├── docker-compose.yml
+├── .php-cs-fixer.php
+├── .editorconfig
+├── .env
 ├── Makefile
 └── README.md
 ```
@@ -157,7 +238,7 @@ Os seguintes comandos estão disponíveis através do `make`:
 
 ___
 
-## Executando a aplicação e rodando o dump do banco de dados do desafio de busca
+## Executando a aplicação e rodando o dump do banco de dados do desafio
 Executando a aplicação:
 ```sh
 make start-with-db
@@ -186,38 +267,6 @@ ___
 ## Parando a aplicação e limpando os serviços
 ```sh
 make stop # Talvez você tenha que rodar este comando usando o sudo
-```
-___
-
-## A API de busca
-
-### Endpoints
-
-| URL                                | Serviço                                                     |
-|------------------------------------|-------------------------------------------------------------|
-| [/](/)                             | Página inicial com as diretrizes do projeto                 |
-| [/users/name](/users/name)         | Retorna todos os usuários de acordo com seu nome completo   |
-| [/users/username](/users/username) | Retorna todos os usuários de acordo com seu nome de usuário |
-
-
-### Parâmetros de URL
-| Parâmetro | Descrição                                                                                                       |
-|-----------|-----------------------------------------------------------------------------------------------------------------|
-| query     | Utilize este parâmetro para realizar uma busca nos endpoints                                                    |
-| from      | Utilize este parâmetro para configurar o inicio da busca de usuários  (default: 1)                              |
-| size      | Utilize este parâmetro para configurar a quantidade de usuários que devem ser retornados na busca (default: 15) |
-
-#### Exemplo de requisição com parâmetros de URL
-
-Buscando usuários por nome completo
-
-```
-GET /users/name?query=Edmundo&from=1&size=10
-```
-
-Buscando usuários por nome de usuário
-```
-GET /users/username?query=Edmundo&from=1&size=10
 ```
 ___
 

@@ -1,8 +1,9 @@
 <?php
 
-use Selene\Controllers\BaseController;
+use CurrencyCodesModel;
 use Selene\Request\Request;
 use Selene\Response\Response;
+use Selene\Controllers\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CurrencyCodesController extends BaseController

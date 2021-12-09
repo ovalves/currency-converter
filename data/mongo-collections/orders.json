@@ -1,5 +1,5 @@
 {
-    "_id" : ObjectId("61ac48f33c422d4ca56aafc2"),
+    "_id" : "61ac48f33c422d4ca56aafc2",
     "codein" : "BRL",
     "code" : "USD",
     "bid" : "5.6532",
