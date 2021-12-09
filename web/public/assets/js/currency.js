@@ -36,6 +36,13 @@ class Currency {
         });
 
         $("#next").on('click', function () {
+            if ($("#codeout-select option:selected").val() == 0) {
+                toastr.error('Você deve selecionar uma moeda para continuar o processo de conversão.');
+                $("#codeout-select").focus();
+                return;
+            }
+
+            stepper.next()
             that.codeinValue = $("#codein-value").val();
             $("#convert-value").html(
                 new Intl.NumberFormat('pt-BR', {
@@ -74,7 +81,7 @@ class Currency {
         $.ajax({
             url: `${API_URL}/currency/codes`,
             success: function (response) {
-                let html = '<option selected="selected">Selecionar Moeda</option>';
+                let html = '<option value="0" selected="selected">Selecionar Moeda</option>';
 
                 for (let [key, value] of Object.entries(response.data)) {
                     html += `<option value="${value.type}">${value.label} - ${value.type}</option>`;

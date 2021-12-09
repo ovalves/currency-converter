@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use Exception;
-use Selene\Http\Client;
-use App\Exceptions\PaymentMethodBuilderException;
 
 final class ApplyPaymentMethodTaxService
 {

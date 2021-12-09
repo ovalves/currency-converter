@@ -91,7 +91,6 @@ Como definição para a resolução do problema de conversão monetária. Temos:
 * O seu valor de compra deve ser **maior** que R$ 1.000 e **menor** que R$ 100.000,00
 * Deve ter formas de pagamento em **boleto** ou **cartão de crédito**
 * Deve exibir no final da operação: O valor que será adquirido na **moeda de destino** e as **taxas aplicadas**;
-
 ___
 
 ## Regras do desafio

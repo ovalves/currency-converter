@@ -1,10 +1,4 @@
 <?php
-/**
- * @copyright   2019 - Selene
- * @author      Vinicius Oliveira <vinicius_o.a@live.com>
- * @category    Micro Framework
- * @since       2019-10-12
- */
 
 use Selene\Request\Request;
 use App\Actions\UserSignInAction;
@@ -12,9 +6,6 @@ use Selene\Controllers\BaseController;
 
 class UserSignInAccountController extends BaseController
 {
-    /**
-     * @todo enviar mensagens flash para a view
-     */
     public function signin(Request $request): mixed
     {
         try {
@@ -41,7 +32,7 @@ class UserSignInAccountController extends BaseController
 
         redirect()
             ->to(env('APP_URL') . '/client/signin')
-            ->message('success', 'Logado com sucesso!')
+            ->message('success', 'Sua sessão foi finalizada!')
             ->go();
     }
 }

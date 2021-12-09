@@ -14,9 +14,6 @@ trait ConvertRequestTrait
 {
     public function throwErrorForRequestedValue(float $value): void
     {
-        /**
-         * @todo Pegar os dados MIN_VALUE_CONSTRAINT e MAX_VALUE_CONSTRAINT da config do mongo DB
-         */
         if ($value < ConvertModel::MIN_VALUE_CONSTRAINT || $value > ConvertModel::MAX_VALUE_CONSTRAINT) {
             throw new ValueOutOfRangeException();
         }

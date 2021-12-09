@@ -8,12 +8,6 @@ use Selene\Request\Request;
 
 class RegisterUserAction
 {
-    /**
-     * @todo enviar o email de criação de conta
-     *
-     * @param Request $request
-     * @return boolean
-     */
     public function run(Request $request): bool
     {
         $data = $request->sanitize([
@@ -25,7 +19,5 @@ class RegisterUserAction
         ]);
 
         return (new CreateUserByCredentialsTask)->run($data);
-
-        // Mail::send(new UserRegisteredMail($user));
     }
 }
