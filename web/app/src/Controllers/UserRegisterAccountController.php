@@ -12,12 +12,15 @@ class UserRegisterAccountController extends BaseController
             $created = (new RegisterUserAction)->run($request);
 
             if ($created) {
-                header('Location:' . env('APP_URL'));
-                die;
+                redirect()
+                    ->to(env('APP_URL'))
+                    ->message('success', 'Conta criada com sucesso!')
+                    ->go();
             }
         } catch (\Throwable $th) {
-            header('Location:' . env('APP_URL') . '/client/signup');
-            die('as');
+            redirect()
+                ->message('failed', 'Erro ao registar sua conta.')
+                ->back();
         }
     }
 }
