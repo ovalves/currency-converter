@@ -71,10 +71,10 @@ PS.: Utilize os comando do Make para rodar o projeto mais facilmente
 * Crie as collections (currency_codes, payment e tax) do MongoDB. As collections estão localizadas em data/mongo-collections
 * Acesse o projeto no seu navegador http://localhost:8000
     * Acessando como admin
-        * email: admin@oliveiratrust.com.br
+        * email: admin@test.com.br
         * senha: admin
     * Acessando como cliente
-        * email: cliente@oliveiratrust.com.br
+        * email: cliente@test.com.br
         * senha: cliente
 
 ### Para rodar o dump do mysql sem usar o makefile

@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `users` (`user_id`, `is_admin`, `email`, `fullname`, `password`, `time_created`, `time_updated`) VALUES
-	(1, 1, 'admin@oliveiratrust.com.br', 'admin oliveiratrust', '$argon2id$v=19$m=65536,t=2,p=1$uGf+zt21exD8eUR2r2P2Mg$1hhfMJ2eIdxoG/xcy+Pc2y5AJ+0sODg9liLU06SqHYc', NULL, NULL),
-	(2, 0, 'cliente@oliveiratrust.com.br', 'cliente oliveiratrust', '$argon2id$v=19$m=65536,t=2,p=1$WZZUzjSaTOeV6SagPq1x0Q$QRaU0XJWJRQvYMPZ7L2xu3bHmo3xu7wAE33JPLc8N+s', NULL, NULL);
+	(1, 1, 'admin@test.com.br', 'admin test', '$argon2id$v=19$m=65536,t=2,p=1$uGf+zt21exD8eUR2r2P2Mg$1hhfMJ2eIdxoG/xcy+Pc2y5AJ+0sODg9liLU06SqHYc', NULL, NULL),
+	(2, 0, 'cliente@test.com.br', 'cliente test', '$argon2id$v=19$m=65536,t=2,p=1$WZZUzjSaTOeV6SagPq1x0Q$QRaU0XJWJRQvYMPZ7L2xu3bHmo3xu7wAE33JPLc8N+s', NULL, NULL);
 -- Dumping data for table currency_converter.users: ~0 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
